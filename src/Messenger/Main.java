@@ -14,16 +14,34 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		int port = 8000;
-		Thread gserver = new GroupServer(port, 1);
-		gserver.start();
+		Thread serverMnagager = new ServerManager(port,1);
+		serverMnagager.start();
 		Vector<Socket> users = new Vector<>();
 		Vector<DataOutputStream> out = new Vector<>();
-		for(int i=0;i<10;i++)
-		{
 			try {
 				System.out.println("Sending messages");
-				users.add(new Socket(InetAddress.getByName("127.0.0.1"),port));
+				users.add(new Socket(InetAddress.getByName("127.0.0.1"),8000));
+				out.add(new DataOutputStream(users.get(0).getOutputStream()));
+				//System.out.println(String.valueOf(i));
+				out.get(0).writeUTF("gps,User"+String.valueOf(0)+",x,y");
+				out.get(0).flush();
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block///
+				e.printStackTrace();
+			}
+			int j=100000000;
+			while(j-->0);
+		
+		for(int i=1;i<10;i++)
+		{
+			try {
+				//System.out.println("Sending messages");
+				users.add(new Socket(InetAddress.getByName("127.0.0.1"),8001));
 				out.add(new DataOutputStream(users.get(i).getOutputStream()));
+				//System.out.println(String.valueOf(i));
 				out.get(i).writeUTF("gps,User"+String.valueOf(i)+",x,y");
 				out.get(i).flush();
 			} catch (UnknownHostException e) {
@@ -44,6 +62,7 @@ public class Main {
 			e.printStackTrace();
 		} 
 	}
+			
 	private static void readNextLine(DataInputStream in) {
 		try {
 			String msg = in.readUTF();
@@ -53,6 +72,10 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+	}
+	private static int min(int a,int b)
+	{
+		return a>b?a:b;
 	}
 
 }

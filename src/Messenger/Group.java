@@ -3,12 +3,12 @@ package Messenger;
 import java.util.Vector;
 
 public class Group extends Thread{
-	private Vector<Thread>users;
+	private Vector<User>users;
 	private Vector<String> messageQueue;
 	private boolean flag;
 	
 	Group(){
-		//System.out.println("Group created.");
+		System.out.println("Group created.");
 		this.users = new Vector<>();
 		this.messageQueue = new Vector<>();
 		this.flag = false;
@@ -50,35 +50,42 @@ public class Group extends Thread{
 	{
 		for(int i=0;i<users.size();i++)
 		{
-			((User) this.users.elementAt(i)).send(message);
+			this.users.elementAt(i).send(message);
 		}
 	}
 	public void addUser(User u)
 	{
-		System.out.println(u.getNameUser() +"added to the group");
+		//System.out.println(u.getNameUser() +"added to the group");
 		u.addMessageQueue(this.messageQueue);
-		Thread t = new Thread(u);
-		this.users.addElement(t);
-		t.start();
+		
+		this.users.addElement(u);
+		u.start();
 		this.flag = true;
 	}
 	private void handleMessage(String m)
 	{
 		String[] message = m.split(",");
 		handleZero(m);
-		System.out.println("Handling message: "+ m);
+		//System.out.println("Handling message: "+ m);
 	}
 	private void handleZero (String message)
 	{
-		if(message.contains("join"))
-		{
-			
-		}else if(message.contains("leave")) {
-			
+		if(message.contains("leave")) {
+			String[] msg = message.split(",");
+			int index = this.getUserIndex(msg[1]);
 		}else {
 			// Do nothing
 		}
 		this.messageGroup(message);
+	}
+	private int getUserIndex(String name)
+	{
+		for(int i=0;i<this.users.size();i++)
+			if(((User) users.get(i)).getNameUser() == name)
+			{
+				return i;
+			}
+		return -1;
 	}
 
 }

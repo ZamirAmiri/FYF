@@ -27,7 +27,7 @@ public class UserListener extends Thread{
 		String s = null;
 		try {
 			s = this.in.readUTF();
-			System.out.println("Message recieved is: "+ s);
+			//System.out.println("Message recieved is: "+ s);
 			this.messageQueue.add(s);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

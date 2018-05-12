@@ -17,7 +17,7 @@ public class User extends Thread{
 	private Thread listener;
 	User(String name,Socket socket)
 	{
-		System.out.println(name + " created.");
+		System.out.println("User created with the name:"+name);
 		this.name = name;
 		this.socket = socket;
 		//initialize();
@@ -32,7 +32,7 @@ public class User extends Thread{
 	{
 		try {
 			this.out = new DataOutputStream(this.socket.getOutputStream());
-			this.printLogger("Created");
+			//this.printLogger("Created");
 			this.listener = new Thread(new UserListener(new DataInputStream(this.socket.getInputStream()), this.messageQueue));
 			listener.start();
 		} catch (IOException e) {

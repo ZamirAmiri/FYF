@@ -1,42 +1,43 @@
 package Messenger;
 
-import java.util.Vector;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
-public class Server implements Runnable{
-	Vector<Group>groups;
-	Vector<String> messageQueue;
-	Server()
+public class Server extends Thread{
+	private ServerSocket server ;
+	private int name;
+	private int port;
+	
+	Server(int port)
 	{
-		groups = new Vector<>();
-		messageQueue = new Vector<>();
-	}
-	private void setUpStreams()
-	{
-		
+		System.out.println("Creating server with port nr "+String.valueOf(port));
+		this.name = 0;
+		this.port = port;
+		try {
+			System.out.println("Server:Server Socket created with port "+String.valueOf(port));
+			this.server = new ServerSocket(this.port);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void run()
 	{
 		while(true)
-		{
-			if(messageQueue.isEmpty())
-				try {
-					this.wait();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			handleMessage();
-		}
+			listen();
 	}
-	private void handleMessage()
+	private void listen()
 	{
-		String[] command = this.messageQueue.firstElement().split(",");
-		String user;
-		for (int i=0;i < 3;i++)
-		{
-			
+		try {
+			System.out.println("Group is created by Host");
+			GroupServer g = new GroupServer(this.port+1,this.name++,(new User("0",this.server.accept())));
+			g.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		 
+		
 	}
 
 }

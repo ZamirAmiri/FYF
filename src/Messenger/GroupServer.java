@@ -8,13 +8,16 @@ public class GroupServer extends Thread{
 	private int port;
 	private ServerSocket socket;
 	private Group group;
-	private int userCounter = 0;
+	private int userCounter;
 
-	GroupServer(int port,int name){
+	GroupServer(int port,int name,User u){
+		System.out.println("GroupServer created with port"+port);
 		this.name = name;
 		this.port = port;
 		this.group = new Group();
+		this.group.addUser(u);
 		this.group.start();
+		this.userCounter = 0;
 	}
 	public void run()
 	{
@@ -27,7 +30,8 @@ public class GroupServer extends Thread{
 	private void listen() {
 		// TODO Auto-generated method stub
 		try {
-			this.group.addUser(new User(String.valueOf(this.userCounter++),this.socket.accept()));
+			//System.out.println("HelloPlease");
+			addUserToGroup(new User(String.valueOf(this.userCounter++),this.socket.accept()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -43,6 +47,11 @@ public class GroupServer extends Thread{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	private void addUserToGroup(User u)
+	{
+		this.group.addUser(u);
+		
 	}
 
 }
