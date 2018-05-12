@@ -16,14 +16,14 @@ public class UserListener extends Thread{
 
 	@Override
 	public void run() {
-		System.out.println("Listener started");
+		//System.out.println("Listener started");
 		while(this.listen());
 		
 	}
 
 	private boolean listen()
 	{
-		System.out.println("Listening to user");
+		//System.out.println("Listening to user");
 		String s = null;
 		try {
 			s = this.in.readUTF();

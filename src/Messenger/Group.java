@@ -8,7 +8,7 @@ public class Group extends Thread{
 	private boolean flag;
 	
 	Group(){
-		System.out.println("Group created.");
+		//System.out.println("Group created.");
 		this.users = new Vector<>();
 		this.messageQueue = new Vector<>();
 		this.flag = false;
@@ -17,27 +17,29 @@ public class Group extends Thread{
 	
 	public void run()
 	{
-		System.out.println("Group started as thread");
+		//System.out.println("Group started as thread");
 		groupThread();
 	}
 
 	private void groupThread()
 	{
-		System.out.println("Thread started");
+		//System.out.println("Thread started");
 		if(users.size() == 0 && flag == true)
 		{
 			return;
 		}
-		while(messageQueue.size() == 0);
-		/*
+		if(messageQueue.size() == 0)
 		{
+			
 			try {
-				this.wait();
+				synchronized (this) {
+				    this.wait();
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}*/
+		}
 		handleMessage(this.messageQueue.firstElement());
 		//messageGroup(this.messageQueue.firstElement());
 		this.messageQueue.remove(0);
@@ -48,12 +50,12 @@ public class Group extends Thread{
 	{
 		for(int i=0;i<users.size();i++)
 		{
-			//this.users.elementAt(i).send(message);
+			((User) this.users.elementAt(i)).send(message);
 		}
 	}
 	public void addUser(User u)
 	{
-		System.out.println(u.getName() +"added to the group");
+		System.out.println(u.getNameUser() +"added to the group");
 		u.addMessageQueue(this.messageQueue);
 		Thread t = new Thread(u);
 		this.users.addElement(t);
@@ -62,7 +64,21 @@ public class Group extends Thread{
 	}
 	private void handleMessage(String m)
 	{
+		String[] message = m.split(",");
+		handleZero(m);
 		System.out.println("Handling message: "+ m);
+	}
+	private void handleZero (String message)
+	{
+		if(message.contains("join"))
+		{
+			
+		}else if(message.contains("leave")) {
+			
+		}else {
+			// Do nothing
+		}
+		this.messageGroup(message);
 	}
 
 }

@@ -3,12 +3,10 @@ package Messenger;
 import java.util.Vector;
 
 public class Server implements Runnable{
-	Vector<User> users;
 	Vector<Group>groups;
 	Vector<String> messageQueue;
 	Server()
 	{
-		users = new Vector<>();
 		groups = new Vector<>();
 		messageQueue = new Vector<>();
 	}

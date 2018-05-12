@@ -8,19 +8,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
 
-public class User implements Runnable{
-	private ServerSocket server;
+public class User extends Thread{
 	private String name;
 	private int port;
 	private Socket socket;
 	private Vector<String> messageQueue;
 	private DataOutputStream out;
 	private Thread listener;
-	User(String name,int port)
+	User(String name,Socket socket)
 	{
 		System.out.println(name + " created.");
 		this.name = name;
-		this.port = port;
+		this.socket = socket;
 		//initialize();
 		//this.start();
 	}
@@ -32,11 +31,8 @@ public class User implements Runnable{
 	private void initialize()
 	{
 		try {
-			System.out.println(this.name + ": Creating streams.");
-			server = new ServerSocket(this.port);
-			this.socket = server.accept();
-			System.out.println(this.name +": Connected");
 			this.out = new DataOutputStream(this.socket.getOutputStream());
+			this.printLogger("Created");
 			this.listener = new Thread(new UserListener(new DataInputStream(this.socket.getInputStream()), this.messageQueue));
 			listener.start();
 		} catch (IOException e) {
@@ -65,10 +61,7 @@ public class User implements Runnable{
 		}
 		
 	}
-	public ServerSocket getServer() {
-		return server;
-	}
-	public String getName() {
+	public String getNameUser() {
 		return name;
 	}
 	public int getPort() {
@@ -91,6 +84,10 @@ public class User implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		this.initialize();
+	}
+	private void printLogger(String msg)
+	{
+		System.out.println("User "+this.name+": "+msg);
 	}
 
 
