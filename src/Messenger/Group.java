@@ -70,9 +70,12 @@ public class Group extends Thread{
 	}
 	private void handleZero (String message)
 	{
-		if(message.contains("leave")) {
-			String[] msg = message.split(",");
-			int index = this.getUserIndex(msg[1]);
+		String name = message.split(",")[1];
+		if(message.contains("join")) {
+			this.users.get(this.users.size()-1).setName(name);
+		}if(message.contains("leave")) {
+			String msg = message.split(",")[1];
+			this.users.remove(this.getUserIndex(msg));
 		}else {
 			// Do nothing
 		}
