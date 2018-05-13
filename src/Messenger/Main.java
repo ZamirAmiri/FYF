@@ -14,9 +14,10 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		int port = 8000;
-		Thread serverMnagager = new ServerManager(port,1);
-		serverMnagager.start();
-		Vector<Socket> users = new Vector<>();
+		Thread serverMagager = new ServerManager(port,1);
+		serverMagager.start();
+		
+		/*Vector<Socket> users = new Vector<>();
 		Vector<DataOutputStream> out = new Vector<>();
 			try {
 				System.out.println("Sending messages");
@@ -60,7 +61,7 @@ public class Main {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		} */
 	}
 			
 	private static void readNextLine(DataInputStream in) {

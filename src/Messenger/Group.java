@@ -11,6 +11,8 @@ public class Group extends Thread{
 		System.out.println("Group created.");
 		this.users = new Vector<>();
 		this.messageQueue = new Vector<>();
+		for(int i=0;i<10;i++)
+			this.messageQueue.add("User ".concat(String.valueOf(i)).concat(" says hello, and welcomes you!"));
 		this.flag = false;
 		//groupThread();
 	}
@@ -23,27 +25,31 @@ public class Group extends Thread{
 
 	private void groupThread()
 	{
+		int iterator = 0;
 		//System.out.println("Thread started");
-		if(users.size() == 0 && flag == true)
+		while(true)
 		{
-			return;
-		}
-		if(messageQueue.size() == 0)
-		{
-			
-			try {
-				synchronized (this) {
-				    this.wait();
-				}
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(users.size() == 0 && flag == true)
+			{
+				return;
 			}
+			if(messageQueue.isEmpty())
+			{
+				try {
+					synchronized (this) {
+					    this.wait();
+					}
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			System.out.println("Message nr:"+ (iterator++) + " "+messageQueue.firstElement());
+			
+			handleMessage(this.messageQueue.firstElement());
+			//messageGroup(this.messageQueue.firstElement());
+			this.messageQueue.remove(0);
 		}
-		handleMessage(this.messageQueue.firstElement());
-		//messageGroup(this.messageQueue.firstElement());
-		this.messageQueue.remove(0);
-		this.groupThread();
 	}
 	
 	private void messageGroup(String message)
